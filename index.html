@@ -1,0 +1,800 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Edgar E. Peralta — IT Professional</title>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:wght@300;400;500;600&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --black: #0a0a0a;
+    --white: #f5f2ee;
+    --accent: #ff4d1c;
+    --accent2: #1c9fff;
+    --gray: #888;
+    --card-bg: #111;
+    --border: rgba(255,255,255,0.07);
+  }
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    background: var(--black);
+    color: var(--white);
+    font-family: 'DM Sans', sans-serif;
+    font-weight: 300;
+    overflow-x: hidden;
+  }
+
+  /* ── NOISE OVERLAY ── */
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");
+    pointer-events: none;
+    z-index: 999;
+    opacity: 0.4;
+  }
+
+  /* ── NAV ── */
+  nav {
+    position: fixed;
+    top: 0; left: 0; right: 0;
+    z-index: 100;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1.2rem 4rem;
+    backdrop-filter: blur(20px);
+    background: rgba(10,10,10,0.8);
+    border-bottom: 1px solid var(--border);
+  }
+
+  .nav-logo {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 1.6rem;
+    letter-spacing: 0.1em;
+    color: var(--white);
+  }
+
+  .nav-logo span { color: var(--accent); }
+
+  nav ul { list-style: none; display: flex; gap: 2.5rem; }
+  nav a {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.72rem;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--gray);
+    text-decoration: none;
+    transition: color 0.2s;
+  }
+  nav a:hover { color: var(--white); }
+
+  /* ── HERO ── */
+  #hero {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    padding: 0 4rem 5rem;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .hero-bg-number {
+    position: absolute;
+    top: 50%;
+    right: -2rem;
+    transform: translateY(-50%);
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: clamp(18rem, 30vw, 34rem);
+    color: rgba(255,255,255,0.02);
+    line-height: 1;
+    user-select: none;
+    pointer-events: none;
+  }
+
+  .hero-tag {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.75rem;
+    letter-spacing: 0.2em;
+    color: var(--accent);
+    text-transform: uppercase;
+    margin-bottom: 1.5rem;
+    opacity: 0;
+    animation: fadeUp 0.8s ease forwards 0.2s;
+  }
+
+  h1 {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: clamp(4rem, 12vw, 11rem);
+    line-height: 0.9;
+    letter-spacing: -0.01em;
+    opacity: 0;
+    animation: fadeUp 0.8s ease forwards 0.4s;
+  }
+
+  h1 .line2 { color: var(--accent); }
+
+  .hero-sub {
+    margin-top: 2rem;
+    max-width: 500px;
+    font-size: 1.05rem;
+    line-height: 1.7;
+    color: rgba(245,242,238,0.6);
+    opacity: 0;
+    animation: fadeUp 0.8s ease forwards 0.6s;
+  }
+
+  .hero-cta {
+    margin-top: 2.5rem;
+    display: flex;
+    gap: 1rem;
+    opacity: 0;
+    animation: fadeUp 0.8s ease forwards 0.8s;
+  }
+
+  .btn {
+    display: inline-block;
+    padding: 0.85rem 2rem;
+    font-family: 'DM Mono', monospace;
+    font-size: 0.75rem;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    text-decoration: none;
+    border: 1px solid;
+    transition: all 0.25s;
+    cursor: pointer;
+  }
+
+  .btn-primary {
+    background: var(--accent);
+    border-color: var(--accent);
+    color: var(--white);
+  }
+  .btn-primary:hover { background: transparent; color: var(--accent); }
+
+  .btn-outline {
+    background: transparent;
+    border-color: rgba(255,255,255,0.2);
+    color: var(--white);
+  }
+  .btn-outline:hover { border-color: var(--white); }
+
+  .hero-info {
+    position: absolute;
+    right: 4rem;
+    bottom: 5rem;
+    text-align: right;
+    opacity: 0;
+    animation: fadeUp 0.8s ease forwards 1s;
+  }
+
+  .hero-info p {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.72rem;
+    color: var(--gray);
+    letter-spacing: 0.1em;
+    line-height: 2;
+  }
+
+  /* ── SECTIONS ── */
+  section { padding: 7rem 4rem; }
+
+  .section-label {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.72rem;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin-bottom: 1rem;
+  }
+
+  h2 {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: clamp(2.5rem, 6vw, 5rem);
+    letter-spacing: 0.02em;
+    line-height: 1;
+    margin-bottom: 4rem;
+  }
+
+  /* ── ABOUT ── */
+  #about {
+    border-top: 1px solid var(--border);
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 6rem;
+    align-items: start;
+  }
+
+  .about-text p {
+    font-size: 1.1rem;
+    line-height: 1.8;
+    color: rgba(245,242,238,0.75);
+    margin-bottom: 1.5rem;
+  }
+
+  .about-stats {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 2rem;
+    margin-top: 1rem;
+  }
+
+  .stat-box {
+    border: 1px solid var(--border);
+    padding: 1.5rem;
+    position: relative;
+    overflow: hidden;
+    transition: border-color 0.3s;
+  }
+  .stat-box:hover { border-color: var(--accent); }
+
+  .stat-box::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0;
+    width: 3px; height: 100%;
+    background: var(--accent);
+  }
+
+  .stat-num {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 3rem;
+    color: var(--white);
+    line-height: 1;
+  }
+
+  .stat-label {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.7rem;
+    letter-spacing: 0.1em;
+    color: var(--gray);
+    text-transform: uppercase;
+    margin-top: 0.4rem;
+  }
+
+  .about-quals { margin-top: 2rem; }
+
+  .qual-item {
+    display: flex;
+    align-items: flex-start;
+    gap: 1rem;
+    padding: 1rem 0;
+    border-bottom: 1px solid var(--border);
+    font-size: 0.95rem;
+    color: rgba(245,242,238,0.7);
+    line-height: 1.5;
+  }
+
+  .qual-item::before {
+    content: '→';
+    color: var(--accent);
+    font-family: 'DM Mono', monospace;
+    flex-shrink: 0;
+    margin-top: 0.05rem;
+  }
+
+  /* ── EXPERIENCE ── */
+  #experience { border-top: 1px solid var(--border); }
+
+  .exp-grid { display: flex; flex-direction: column; gap: 0; }
+
+  .exp-item {
+    display: grid;
+    grid-template-columns: 220px 1fr;
+    gap: 3rem;
+    padding: 3rem 0;
+    border-bottom: 1px solid var(--border);
+    transition: background 0.3s;
+    position: relative;
+  }
+
+  .exp-item:hover { background: rgba(255,255,255,0.02); }
+
+  .exp-item:hover .exp-num { color: var(--accent); }
+
+  .exp-left { position: relative; }
+
+  .exp-num {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 5rem;
+    color: rgba(255,255,255,0.06);
+    line-height: 1;
+    transition: color 0.3s;
+    position: absolute;
+    top: -1rem;
+    left: 0;
+  }
+
+  .exp-date {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.7rem;
+    color: var(--gray);
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    margin-top: 3.5rem;
+  }
+
+  .exp-company {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.7rem;
+    color: var(--accent2);
+    letter-spacing: 0.1em;
+    margin-top: 0.5rem;
+  }
+
+  .exp-title {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 2rem;
+    letter-spacing: 0.03em;
+    margin-bottom: 1.2rem;
+    line-height: 1.1;
+  }
+
+  .exp-bullets { list-style: none; }
+
+  .exp-bullets li {
+    font-size: 0.9rem;
+    color: rgba(245,242,238,0.65);
+    line-height: 1.7;
+    padding: 0.3rem 0;
+    padding-left: 1.2rem;
+    position: relative;
+  }
+
+  .exp-bullets li::before {
+    content: '–';
+    position: absolute;
+    left: 0;
+    color: var(--accent);
+  }
+
+  /* ── SKILLS ── */
+  #skills {
+    border-top: 1px solid var(--border);
+    background: rgba(255,255,255,0.01);
+  }
+
+  .skills-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+    gap: 1px;
+    border: 1px solid var(--border);
+    margin-top: -1rem;
+  }
+
+  .skill-chip {
+    padding: 1.5rem;
+    border: none;
+    background: var(--card-bg);
+    text-align: center;
+    transition: background 0.2s;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .skill-chip:hover { background: rgba(255,77,28,0.08); }
+
+  .skill-chip:hover .skill-name { color: var(--white); }
+
+  .skill-icon {
+    font-size: 1.8rem;
+    margin-bottom: 0.6rem;
+    display: block;
+  }
+
+  .skill-name {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.7rem;
+    letter-spacing: 0.08em;
+    color: var(--gray);
+    text-transform: uppercase;
+    transition: color 0.2s;
+  }
+
+  /* ── EDUCATION ── */
+  #education { border-top: 1px solid var(--border); }
+
+  .edu-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 2rem; }
+
+  .edu-card {
+    border: 1px solid var(--border);
+    padding: 2.5rem;
+    position: relative;
+    overflow: hidden;
+    transition: border-color 0.3s, transform 0.3s;
+  }
+
+  .edu-card:hover { border-color: var(--accent2); transform: translateY(-4px); }
+
+  .edu-card::after {
+    content: '';
+    position: absolute;
+    bottom: 0; left: 0;
+    width: 100%; height: 3px;
+    background: linear-gradient(90deg, var(--accent), var(--accent2));
+    transform: scaleX(0);
+    transform-origin: left;
+    transition: transform 0.4s;
+  }
+  .edu-card:hover::after { transform: scaleX(1); }
+
+  .edu-degree {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 1.6rem;
+    margin-bottom: 0.5rem;
+    line-height: 1.1;
+  }
+
+  .edu-school {
+    font-size: 0.9rem;
+    color: rgba(245,242,238,0.6);
+    margin-bottom: 0.4rem;
+  }
+
+  .edu-date {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.7rem;
+    color: var(--accent);
+    letter-spacing: 0.1em;
+  }
+
+  /* ── CERTS ── */
+  .certs-grid {
+    margin-top: 3rem;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1rem;
+  }
+
+  .cert-badge {
+    display: flex;
+    align-items: center;
+    gap: 0.8rem;
+    border: 1px solid var(--border);
+    padding: 0.8rem 1.2rem;
+    font-family: 'DM Mono', monospace;
+    font-size: 0.72rem;
+    color: var(--gray);
+    text-decoration: none;
+    letter-spacing: 0.05em;
+    transition: all 0.25s;
+  }
+
+  .cert-badge:hover {
+    border-color: var(--accent2);
+    color: var(--accent2);
+  }
+
+  .cert-badge span { font-size: 1rem; }
+
+  /* ── CONTACT ── */
+  #contact {
+    border-top: 1px solid var(--border);
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 6rem;
+    align-items: center;
+  }
+
+  #contact h2 { margin-bottom: 1rem; }
+
+  .contact-sub {
+    font-size: 1rem;
+    color: rgba(245,242,238,0.55);
+    line-height: 1.8;
+    max-width: 400px;
+    margin-bottom: 2.5rem;
+  }
+
+  .contact-links { display: flex; flex-direction: column; gap: 1rem; }
+
+  .contact-link {
+    display: flex;
+    align-items: center;
+    gap: 1.2rem;
+    padding: 1.2rem 1.5rem;
+    border: 1px solid var(--border);
+    text-decoration: none;
+    color: var(--white);
+    transition: all 0.25s;
+    font-family: 'DM Mono', monospace;
+    font-size: 0.8rem;
+    letter-spacing: 0.05em;
+  }
+
+  .contact-link:hover { border-color: var(--accent); background: rgba(255,77,28,0.05); }
+
+  .contact-link .icon { font-size: 1.3rem; color: var(--accent); }
+
+  .big-name {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: clamp(3rem, 8vw, 7rem);
+    line-height: 0.9;
+    color: rgba(255,255,255,0.04);
+    text-align: right;
+    user-select: none;
+  }
+
+  /* ── FOOTER ── */
+  footer {
+    border-top: 1px solid var(--border);
+    padding: 2rem 4rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  footer p {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.7rem;
+    color: var(--gray);
+    letter-spacing: 0.1em;
+  }
+
+  /* ── ANIMATIONS ── */
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(30px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  .reveal {
+    opacity: 0;
+    transform: translateY(40px);
+    transition: opacity 0.7s ease, transform 0.7s ease;
+  }
+  .reveal.visible { opacity: 1; transform: translateY(0); }
+
+  /* ── RESPONSIVE ── */
+  @media (max-width: 768px) {
+    nav { padding: 1rem 1.5rem; }
+    nav ul { display: none; }
+    section, #hero, #about, #contact { padding: 4rem 1.5rem; }
+    #about, #contact, .edu-grid { grid-template-columns: 1fr; gap: 3rem; }
+    .exp-item { grid-template-columns: 1fr; gap: 1rem; }
+    .exp-num { display: none; }
+    footer { padding: 1.5rem; flex-direction: column; gap: 0.5rem; text-align: center; }
+    .hero-info { display: none; }
+  }
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <div class="nav-logo">EP<span>.</span></div>
+  <ul>
+    <li><a href="#about">About</a></li>
+    <li><a href="#experience">Experience</a></li>
+    <li><a href="#skills">Skills</a></li>
+    <li><a href="#education">Education</a></li>
+    <li><a href="#contact">Contact</a></li>
+  </ul>
+</nav>
+
+<!-- HERO -->
+<section id="hero">
+  <div class="hero-bg-number">EP</div>
+  <div class="hero-tag">// IT Professional &amp; Operations Leader</div>
+  <h1>Edgar<br><span class="line2">Peralta.</span></h1>
+  <p class="hero-sub">B.S. Information Technology candidate with hands-on experience in financial systems, cloud infrastructure, and team leadership. Bilingual. AWS certified. Ready to build.</p>
+  <div class="hero-cta">
+    <a href="#experience" class="btn btn-primary">View My Work</a>
+    <a href="#contact" class="btn btn-outline">Get In Touch</a>
+  </div>
+  <div class="hero-info">
+    <p>📍 Lakeland, FL 33811</p>
+    <p>🌐 English &amp; Spanish Fluent</p>
+    <p>☁️ AWS Certified</p>
+  </div>
+</section>
+
+<!-- ABOUT -->
+<section id="about">
+  <div class="about-left">
+    <div class="section-label reveal">// 01 — About Me</div>
+    <h2 class="reveal">Who I Am</h2>
+    <div class="about-text reveal">
+      <p>I'm an aspiring IT professional combining a strong technical foundation with real-world leadership experience. From managing $3B in pharmacy sales at Publix to earning AWS cloud certifications, I bridge the gap between technology and business operations.</p>
+      <p>I thrive in fast-paced environments, lead with empathy, and bring a proactive, adaptable mindset to every challenge I face.</p>
+    </div>
+    <div class="about-stats reveal">
+      <div class="stat-box">
+        <div class="stat-num">3+</div>
+        <div class="stat-label">Years Leading Teams</div>
+      </div>
+      <div class="stat-box">
+        <div class="stat-num">$3B</div>
+        <div class="stat-label">Sales Portfolio Managed</div>
+      </div>
+      <div class="stat-box">
+        <div class="stat-num">2</div>
+        <div class="stat-label">AWS Certifications</div>
+      </div>
+      <div class="stat-box">
+        <div class="stat-num">2</div>
+        <div class="stat-label">Languages Spoken</div>
+      </div>
+    </div>
+  </div>
+  <div class="about-quals reveal">
+    <div class="section-label">// Core Strengths</div>
+    <div style="height:1rem"></div>
+    <div class="qual-item">Strong leadership, supervisory, and interpersonal communication skills developed across multiple industries.</div>
+    <div class="qual-item">Bilingual in English and Spanish — capable of serving diverse teams and clients effectively.</div>
+    <div class="qual-item">Proven ability to work independently and thrive in fast-paced, collaborative environments.</div>
+    <div class="qual-item">Highly motivated with a positive, adaptable mindset and a proactive approach to change and problem-solving.</div>
+    <div class="qual-item">Technical proficiency in data analysis, database management, financial reporting, and cloud systems.</div>
+  </div>
+</section>
+
+<!-- EXPERIENCE -->
+<section id="experience">
+  <div class="section-label reveal">// 02 — Experience</div>
+  <h2 class="reveal">Where I've Been</h2>
+  <div class="exp-grid">
+
+    <div class="exp-item reveal">
+      <div class="exp-left">
+        <div class="exp-num">01</div>
+        <div class="exp-date">Sep 2025 — Present</div>
+        <div class="exp-company">Publix Super Market Inc.</div>
+      </div>
+      <div class="exp-right">
+        <div class="exp-title">Sr. Credit &amp; Collections Specialist<br>Pharmacy Operations</div>
+        <ul class="exp-bullets">
+          <li>Managed collections and auditing of Pharmacy sales ($3B), receivables ($100M), write-offs ($3.6M), and payables.</li>
+          <li>Analyzed General Ledger and P&L for Pharmacy sales, ensuring accurate accounting and financial controls.</li>
+          <li>Ensured accuracy and control of transactions for receivables, write-offs, and payables in the General Ledger.</li>
+          <li>Prepared reports on operational fluctuations within Pharmacy systems using data analysis tools and databases.</li>
+          <li>Reduced write-offs and improved collection of outstanding balances through effective use of technology and database management.</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="exp-item reveal">
+      <div class="exp-left">
+        <div class="exp-num">02</div>
+        <div class="exp-date">Apr 2022 — Apr 2025</div>
+        <div class="exp-company">Round 1 Bowling &amp; Arcade</div>
+      </div>
+      <div class="exp-right">
+        <div class="exp-title">Supervisor</div>
+        <ul class="exp-bullets">
+          <li>Achieved department sales goals through efficient execution of company policies and staff coordination.</li>
+          <li>Provided personal sales support on the floor and built effective workflows with team members.</li>
+          <li>Resolved conflicts and handled problem-solving with both guests and employees.</li>
+          <li>Conducted cash and equipment audits in accordance with loss prevention guidelines.</li>
+          <li>Managed opening and closing duties including security checks, alarm systems, and register counts.</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="exp-item reveal">
+      <div class="exp-left">
+        <div class="exp-num">03</div>
+        <div class="exp-date">Jan 2021 — Apr 2022</div>
+        <div class="exp-company">AMC Theaters</div>
+      </div>
+      <div class="exp-right">
+        <div class="exp-title">Crew Leader</div>
+        <ul class="exp-bullets">
+          <li>Greeted and treated guests with exceptional hospitality and a consistently positive attitude.</li>
+          <li>Operated cashier efficiently — ringing orders, taking payment, and giving change with speed and accuracy.</li>
+          <li>Trained new team members upon hire, ensuring consistent service standards.</li>
+          <li>Maintained knowledge of proper food handling and safety procedures.</li>
+        </ul>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- SKILLS -->
+<section id="skills">
+  <div class="section-label reveal">// 03 — Skills</div>
+  <h2 class="reveal">What I Bring</h2>
+  <div class="skills-grid reveal">
+    <div class="skill-chip"><span class="skill-icon">☁️</span><div class="skill-name">Cloud (AWS)</div></div>
+    <div class="skill-chip"><span class="skill-icon">🗄️</span><div class="skill-name">Databases</div></div>
+    <div class="skill-chip"><span class="skill-icon">📊</span><div class="skill-name">Data Analysis</div></div>
+    <div class="skill-chip"><span class="skill-icon">💰</span><div class="skill-name">Financial Reporting</div></div>
+    <div class="skill-chip"><span class="skill-icon">🔒</span><div class="skill-name">Cloud Security</div></div>
+    <div class="skill-chip"><span class="skill-icon">🧠</span><div class="skill-name">IT Automation</div></div>
+    <div class="skill-chip"><span class="skill-icon">👥</span><div class="skill-name">Team Leadership</div></div>
+    <div class="skill-chip"><span class="skill-icon">🔎</span><div class="skill-name">Auditing</div></div>
+    <div class="skill-chip"><span class="skill-icon">📋</span><div class="skill-name">Collections</div></div>
+    <div class="skill-chip"><span class="skill-icon">🌐</span><div class="skill-name">Bilingual</div></div>
+    <div class="skill-chip"><span class="skill-icon">⚡</span><div class="skill-name">Problem Solving</div></div>
+    <div class="skill-chip"><span class="skill-icon">📈</span><div class="skill-name">P&L Analysis</div></div>
+  </div>
+</section>
+
+<!-- EDUCATION -->
+<section id="education">
+  <div class="section-label reveal">// 04 — Education</div>
+  <h2 class="reveal">My Foundation</h2>
+  <div class="edu-grid reveal">
+    <div class="edu-card">
+      <div class="edu-degree">B.S. Information Technology</div>
+      <div class="edu-school">Florida International University — Miami, FL<br>Minor in Criminology</div>
+      <div class="edu-date">Aug 2023 — Aug 2025</div>
+    </div>
+    <div class="edu-card">
+      <div class="edu-degree">Associates of Arts</div>
+      <div class="edu-school">Broward College — Pembroke Pines, FL</div>
+      <div class="edu-date">Aug 2021 — Jun 2023</div>
+    </div>
+  </div>
+
+  <div class="certs-grid reveal">
+    <a href="https://www.credly.com/go/HOTNL2OE" target="_blank" class="cert-badge">
+      <span>🏅</span> AWS Academy — Cloud Foundations
+    </a>
+    <a href="https://www.credly.com/go/XeHrhy6p" target="_blank" class="cert-badge">
+      <span>🔐</span> AWS Academy — Cloud Security Foundation
+    </a>
+    <a href="https://www.credly.com/badges/ce9ec57e-806c-4779-a515-d45d8439a666/print" target="_blank" class="cert-badge">
+      <span>⚙️</span> Foundations of IT Automation — FIU IT
+    </a>
+    <div class="cert-badge" style="cursor:default;">
+      <span>🎓</span> Dean's List
+    </div>
+  </div>
+</section>
+
+<!-- CONTACT -->
+<section id="contact">
+  <div>
+    <div class="section-label reveal">// 05 — Contact</div>
+    <h2 class="reveal">Let's Connect</h2>
+    <p class="contact-sub reveal">Open to new opportunities in IT, data operations, or cloud infrastructure. Based in Lakeland, FL. Let's talk.</p>
+    <div class="contact-links reveal">
+      <a href="mailto:peralta.edgare@gmail.com" class="contact-link">
+        <span class="icon">✉️</span> peralta.edgare@gmail.com
+      </a>
+      <a href="tel:9546350493" class="contact-link">
+        <span class="icon">📞</span> (954) 635-0493
+      </a>
+      <div class="contact-link" style="cursor:default;">
+        <span class="icon">📍</span> Lakeland, FL 33811
+      </div>
+    </div>
+  </div>
+  <div class="big-name reveal">EDGAR<br>PERALTA</div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <p>© 2025 Edgar E. Peralta</p>
+  <p>Built for opportunities. Powered by ambition.</p>
+</footer>
+
+<script>
+  // Scroll reveal
+  const reveals = document.querySelectorAll('.reveal');
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        entry.target.classList.add('visible');
+      }
+    });
+  }, { threshold: 0.1, rootMargin: '0px 0px -60px 0px' });
+
+  reveals.forEach(el => observer.observe(el));
+
+  // Stagger children inside grids
+  document.querySelectorAll('.skills-grid.reveal, .certs-grid.reveal').forEach(grid => {
+    const children = grid.children;
+    Array.from(children).forEach((child, i) => {
+      child.style.transitionDelay = `${i * 0.05}s`;
+    });
+  });
+</script>
+</body>
+</html>
